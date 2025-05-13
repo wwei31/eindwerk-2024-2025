@@ -1,0 +1,135 @@
+/* Algemene stijl */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+/* Header */
+header {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+header nav {
+  margin-top: 10px;
+}
+
+header nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+header nav a:hover {
+  text-decoration: underline;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 0 15px;
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.filters input,
+.filters select {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 48%;
+}
+
+/* Grid layout */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.card {
+  background-color: white;
+  border: 1px solid #8b4f4f;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 30%;
+}
+
+.card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover; /* zodat fotos netjes op de kaader */
+  margin-bottom: 10px;
+}
+
+/* Titel in de kader */
+.card h3 {
+  margin: 0;                  /* Verwijdert standaard marge rondom de kop */
+  padding: 0;                 /* Verwijdert standaard padding (indien aanwezig) */
+  font-size: 18px;            
+  font-weight: bold;        
+  color: #333;              
+}
+
+/* Paragraaf in de kader */
+.card p {               
+  font-size: 14px;            
+  color: #666;                
+}
+
+.price {
+  font-weight: bold;
+  color: #27ae60;
+}
+
+.buy-btn {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  text-align: center;
+  width: 100%;
+}
+
+.buy-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Mobile responsief */
+@media (max-width: 768px) {
+  .card {
+    width: 48%;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: 100%;
+  }
+
+  .filters input,
+  .filters select {
+    width: 100%;
+  }
+}
+
+  
