@@ -2,36 +2,53 @@
 session_start();
 include 'connection.php';
 
-// Controle: is het winkelmandje leeg?
+// Simpele controles
+if (!isset($_SESSION['gebruikersnaam'])) {
+    die("Fout: niet ingelogd");
+}
+
 if (empty($_SESSION['winkelmandje'])) {
-    echo "Je winkelmandje is leeg. <a href='shop.php'>Terug naar shop</a>";
-    exit();
+    die("Fout: winkelmandje leeg");
 }
 
-// Bestellingen opslaan in database
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    die("Fout: geen geldige betaling");
+}
+
+$gebruiker = $_SESSION['gebruikersnaam'];
+
+// Opslaan in database
+$success = true;
 foreach ($_SESSION['winkelmandje'] as $item) {
-    $gebruiker = $_SESSION['gebruikersnaam'];
-    $accountID = intval($item['id']);
-    $prijs = floatval($item['prijs']);
-
     $stmt = $conn->prepare("INSERT INTO tblBestellingen (gebruikersnaam, accountID, prijs) VALUES (?, ?, ?)");
-    $stmt->bind_param("sid", $gebruiker, $accountID, $prijs);
-    $stmt->execute();
+    if (!$stmt->execute([$gebruiker, $item['id'], $item['prijs']])) {
+        $success = false;
+        break;
+    }
 }
 
-// Leeg winkelmandje
-$_SESSION['winkelmandje'] = [];
+if ($success) {
+    // Leeg winkelmandje
+    $_SESSION['winkelmandje'] = [];
+    $message = "Bestelling succesvol geplaatst!";
+} else {
+    $message = "Er ging iets mis. Probeer opnieuw.";
+}
 ?>
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <title>Betaling gelukt</title>
+    <meta charset="UTF-8">
+    <title>Bestelling voltooid</title>
 </head>
 <body>
-  <h1>Bedankt voor je bestelling, <?php echo htmlspecialchars($gebruiker); ?>!</h1>
-  <p>De betaling is succesvol voltooid via PayPal.</p>
-  <a href="shop.php">← Terug naar de shop</a>
+    <h1><?php echo $message; ?></h1>
+    
+    <?php if ($success): ?>
+        <p>Bedankt voor je bestelling, <?php echo htmlspecialchars($gebruiker); ?>!</p>
+        <p>Je bestelling wordt verwerkt.</p>
+    <?php endif; ?>
+    
+    <a href="shop.php">← Terug naar shop</a>
 </body>
 </html>
-
