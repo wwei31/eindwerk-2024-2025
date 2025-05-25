@@ -1,44 +1,39 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+
+// Simpele controles
+if (!isset($_SESSION['gebruikersnaam'])) {
+    die("Je moet ingelogd zijn. <a href='login.php'>Login hier</a>");
+}
+
+if (empty($_SESSION['winkelmandje'])) {
+    die("Je winkelmandje is leeg. <a href='shop.php'>Ga naar shop</a>");
+}
+
+// Bereken totaal
+$totaal = 0;
+foreach ($_SESSION['winkelmandje'] as $item) {
+    $totaal += $item['prijs'];
+}
+?>
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <title>Betalen met PayPal</title>
-  <script src="https://www.paypal.com/sdk/js?client-id=AT9ooqHLaYwgUEY9A-0_pqU5ZMx0oxKAg7hG-yw_4EbG4y-cns5X2maLDK73Hg-VTyfEP3mNz_JTx25_&currency=EUR"></script> 
+    <meta charset="UTF-8">
+    <title>Betalen</title>
 </head>
 <body>
-  <h1>Bevestig je betaling</h1>
-  <div id="paypal-button-container"></div>
-
-  <script>
-    // Bereken het totaalbedrag vanuit PHP-session
-    const totaal = <?php
-        $totaal = 0;
-        if (!empty($_SESSION['winkelmandje'])) {
-            foreach ($_SESSION['winkelmandje'] as $item) {
-                $totaal += $item['prijs'];
-            }
-        }
-        echo json_encode($totaal);
-    ?>;
-
-    paypal.Buttons({
-      createOrder: function(data, actions) {
-        return actions.order.create({
-          purchase_units: [{
-            amount: {
-              value: totaal.toFixed(2) // Totale prijs
-            }
-          }]
-        });
-      },
-      onApprove: function(data, actions) {
-        return actions.order.capture().then(function(details) {
-          alert('Betaling voltooid door ' + details.payer.name.given_name);
-          window.location.href = "betaling_succes.php"; // doorsturen
-        });
-      }
-    }).render('#paypal-button-container');
-  </script>
+    <h1>Betaling</h1>
+    <p>Totaalbedrag: €<?php echo number_format($totaal, 2); ?></p>
+    
+    <!-- Simpele vorm zonder echte PayPal -->
+    <form method="POST" action="betaling_succes.php">
+        <input type="hidden" name="totaal" value="<?php echo $totaal; ?>">
+        <button type="submit" style="background: #0070ba; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+            Betaal €<?php echo number_format($totaal, 2); ?>
+        </button>
+    </form>
+    
+    <p><a href="shop.php">← Terug naar shop</a></p>
 </body>
 </html>
