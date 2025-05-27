@@ -20,11 +20,13 @@ $gebruiker = $_SESSION['gebruikersnaam'];
 // Opslaan in database
 $success = true;
 foreach ($_SESSION['winkelmandje'] as $item) {
+    $gebruiker = $_SESSION['gebruikersnaam'];
+    $accountID = intval($item['id']);
+    $prijs = floatval($item['prijs']);
+
     $stmt = $conn->prepare("INSERT INTO tblBestellingen (gebruikersnaam, accountID, prijs) VALUES (?, ?, ?)");
-    if (!$stmt->execute([$gebruiker, $item['id'], $item['prijs']])) {
-        $success = false;
-        break;
-    }
+    $stmt->bind_param("sid", $gebruiker, $accountID, $prijs);
+    $stmt->execute();
 }
 
 if ($success) {
@@ -52,3 +54,4 @@ if ($success) {
     <a href="shop.php">← Terug naar shop</a>
 </body>
 </html>
+
