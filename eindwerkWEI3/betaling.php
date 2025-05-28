@@ -26,7 +26,7 @@ foreach ($_SESSION['winkelmandje'] as $item) {
     <h1>Betaling</h1>
     <p>Totaalbedrag: €<?php echo number_format($totaal, 2); ?></p>
     
-    <!-- Simpele vorm zonder echte PayPal -->
+    <!-- Simpele vorm  -->
     <form method="POST" action="betaling_succes.php">
         <input type="hidden" name="totaal" value="<?php echo $totaal; ?>">
         <button type="submit" style="background: #0070ba; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
