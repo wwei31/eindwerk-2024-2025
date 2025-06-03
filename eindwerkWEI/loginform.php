@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Inloggen</title>
-  <link rel="stylesheet" href="style.css"> <!-- optioneel -->
+<link rel="stylesheet" href="stijl.css">
 </head>
 <body>
   <h1>Inloggen</h1>

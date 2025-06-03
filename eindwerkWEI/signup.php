@@ -14,25 +14,35 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     print "E-mailadres: ".htmlspecialchars($email)."<br>";
 
     $wachtwoord = isset($_POST["paswoord"])? $_POST["paswoord"] :"";
+    password_hash($_POST["paswoord"], PASSWORD_DEFAULT);
     print "Wachtwoord: ".htmlspecialchars($wachtwoord)."<br>";
     include_once("connection.php");
+
+    // $wachtwoord = password_hash($_POST["paswoord"], PASSWORD_DEFAULT);
+
 
     $sql = "INSERT INTO tblgebruiker (Naam, Voornaam, Gebruikersnaam ,email, wachtwoord)
     VALUES ('$naam', '$voornaam', '$gebruikersnaam', '$email', '$wachtwoord')";
 
     if ($conn->query($sql) === TRUE) {
-    echo "New record created successfully";
+        // Succesvolle registratie
+        $conn->close();
+        header("Location: index.php?melding=Account succesvol aangemaakt. Je kunt nu inloggen.");
+        exit();
     } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+        // Foutmelding
+        $fout = $conn->error;
+        $conn->close();
+        header("Location: index.php?melding=Fout bij registratie: $fout");
+        exit();
     }
 
-    $conn->close();
 }
 // print "<a href='signupForm.php'><button>Terug</button></a>";
 print "<button onclick='window.history.go(-1)'>Terug</button><br>";
 
-$vorige=$_SERVER["HTTP_REFERER"];
-print $vorige;
+//$vorige=$_SERVER["HTTP_REFERER"];
+//print $vorige;
 
 
 ?>

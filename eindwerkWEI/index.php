@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
+    <?php if (isset($_GET['melding'])): ?>
+  <script>
+    alert("<?php echo htmlspecialchars($_GET['melding']); ?>");
+  </script>
+<?php endif; ?>
+
     <meta charset="UTF-8">
     <title>Homepagina</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+
             margin: 0;
             padding: 20px;
             text-align: center;

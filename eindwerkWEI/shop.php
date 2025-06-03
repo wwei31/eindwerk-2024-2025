@@ -13,64 +13,83 @@ if (!isset($_SESSION["gebruikersnaam"])) {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Clash of Clans Account Shop</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style11.css" />
 </head>
 <body>
   <header>
     <h1>Clash 2 Clash</h1>
+  <!-- ?php print_r($_SESSION);  -->
     <nav>
       <span>Welkom, <?php echo htmlspecialchars($_SESSION["gebruikersnaam"]); ?></span> |
       <a href="logout.php">Uitloggen</a>
+      <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'admin'): ?>
+        <a href="add_product.php">Product Toevoegen</a>
+      <?php endif; ?>
+      <a href="winkelmandje.php">🛒 Winkelmandje</a>
+      <a href="profiel.php">👤 Mijn Profiel</a>
+
+
     </nav>
+
+
   </header>
-
   <div class="container">
-    <div class="filters">
-      <input type="text" placeholder="Zoek TH niveau..." id="searchInput" />
-      <select id="sortSelect">
-        <option>Prijs (laag-hoog)</option>
-        <option>Prijs (hoog-laag)</option>
-        <option>Nieuwste eerst</option>
-      </select>
+    <form method="GET" action="" class="zoekformulier"> 
+    <input type="text" name="zoekterm" placeholder="Zoek op naam of omschrijving..." value="<?php echo isset($_GET['zoekterm']) ? htmlspecialchars($_GET['zoekterm']) : ''; ?>" />
+    <button type="submit">Zoeken</button>
+  </form>
+
+  <div class="producten"> 
+    <?php
+    include 'connection.php';  // verbinding maakt met je database
+
+    // Selecteer alle Clash of Clans-accounts uit de tabel tblAccounts
+    $sql = "SELECT * FROM tblAccounts";  // Haal alle accounts op
+    $result = $conn->query($sql);
+
+
+
+    $zoekterm = '';
+    if (isset($_GET['zoekterm']) && strlen($_GET['zoekterm']) > 0) {
+        $zoekterm = $conn->real_escape_string($_GET['zoekterm']); // Het zorgt ervoor dat gevaarlijke tekens
+        $sql = "SELECT * FROM tblAccounts 
+                WHERE naam LIKE '%$zoekterm%' OR beschrijving LIKE '%$zoekterm%'";
+        $result = $conn->query($sql);
+    } else {
+        $sql = "SELECT * FROM tblAccounts";
+        $result = $conn->query($sql);
+    }
+
+
+
+    // Loop door alle rijen in de database
+    while($row = $result->fetch_assoc()) {
+    ?>
+
+    <!-- Toon per account de inhoud uit de databank -->
+    <div class="account">
+      <h4><?php echo $row['naam']; ?></h4>
+      <a href="account.php?accountID=<?php echo $row['id']; ?>">
+        <img id="imgAccount" alt="account" src="<?php echo $row['afbeelding']; ?>" />
+      </a>
+      <p><b>Omschrijving: </b><?php echo $row['beschrijving']; ?></p>
+      <p><b>Level: </b><?php echo $row['levels']; ?></p><br>
+      <p class="prijs"><b>Prijs: </b>€ <?php echo $row['prijs']; ?></p>
+      <a href="winkelmandje.php?accountID=<?php echo $row['id']; ?>">Toevoegen</a>
     </div>
 
-    <div class="grid" id="accountGrid">
-      <div class="card">
-        <img src="images/th14.jpg" alt="TH14 Max Account" class="card-img" />
-        <h3>TH14 Max</h3>
-        <p>Inclusief helden op max, 3000+ gems</p>
-        <p class="price">€199</p>
-        <form action="betaling.php" method="post">
-          <input type="hidden" name="description" value="TH14 Max" />
-          <input type="hidden" name="amount" value="199.00" />
-          <button class="buy-btn" type="submit">Koop nu</button>
-        </form>
-      </div>
-      <div class="card">
-        <img src="images/th12.jpg" alt="TH14 Max Account" class="card-img" />
-        <h3>TH12 Goedkoop</h3>
-        <p>Prima basis, troepen lvl 6+</p>
-        <p class="price">€59</p>
-        <form action="betaling.php" method="post">
-          <input type="hidden" name="description" value="TH12 Goedkoop" />
-          <input type="hidden" name="amount" value="59.00" />
-          <button class="buy-btn" type="submit">Koop nu</button>
-        </form>
-      </div>
-      <div class="card">
-        <img src="images/th9.jpg" alt="TH14 Max Account" class="card-img" />
-        <h3>TH9 Old School</h3>
-        <p>Klassiek dorpje, veel upgrades</p>
-        <p class="price">€29</p>
-        <form action="betaling.php" method="post">
-          <input type="hidden" name="description" value="TH9 Old School" />
-          <input type="hidden" name="amount" value="29.00" />
-          <button class="buy-btn" type="submit">Koop nu</button>
-        </form>
-      </div>
-    </div>
+    <?php 
+    };
+    $conn->close();
+    ?>
   </div>
+</div>
 
   <script src="script.js"></script>
+  <footer>
+    <p>&copy;2025 Clash 2 Clash | Eindwerk Wei</p>
+  </footer>
+<button onclick="scrollToTop()" id="scrollTopBtn" title="Naar boven">↑</button>
 </body>
 </html>
+

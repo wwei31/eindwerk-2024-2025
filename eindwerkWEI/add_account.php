@@ -5,7 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Haal de gegevens op uit het formulier
     $naam = $_POST['naam'];
     $beschrijving = $_POST['beschrijving'];
-    $levels = $_POST['levels'];
+    $levels = $_POST['level'];
     $prijs = $_POST['prijs'];
     $afbeelding = $_POST['afbeelding'];
 
@@ -14,9 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Maak een prepared statement en voer het uit
     if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("ssdis", $naam, $beschrijving, $level, $prijs, $afbeelding); // Bind de parameters
+        $stmt->bind_param("ssdis", $naam, $beschrijving, $levels, $prijs, $afbeelding); // Bind de parameters
         if ($stmt->execute()) {
             echo "Account succesvol toegevoegd!";
+            // Redirect naar de shop
+            header("Location: shop.php?melding=Account succesvol toegevoegd.");
         } else {
             echo "Fout bij het toevoegen van account: " . $stmt->error;
         }
