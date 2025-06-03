@@ -14,7 +14,10 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
     echo "E-mailadres: ".htmlspecialchars($email)."<br>";
 
     $wachtwoord = isset($_POST["paswoord"])? $_POST["paswoord"] :"";
+   // password_hash($_POST["paswoord"], PASSWORD_DEFAULT);
     echo "Wachtwoord: ".htmlspecialchars($wachtwoord)."<br>";
+   // echo "Versleuteld: " . htmlspecialchars($wachtwoord_hash) . "<br>";
+
     include_once("connection.php");
 
     // $wachtwoord = password_hash($_POST["paswoord"], PASSWORD_DEFAULT);

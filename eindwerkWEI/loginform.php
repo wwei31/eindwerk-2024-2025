@@ -14,9 +14,10 @@
     <label for="paswoord">Wachtwoord:</label><br>
     <input type="password" id="paswoord" name="paswoord" required><br><br>
 
-    <button type="submit">Inloggen</button>
+    <button type="submit">Inloggen</button> 
+    <p>Nog geen account? <a href="signupform.php">Registreer hier</a></p>
+
   </form>
 
-  <p>Nog geen account? <a href="signupform.php">Registreer hier</a></p>
 </body>
 </html>

@@ -46,6 +46,7 @@
  <footer>
     <p>&copy;2025 Clash 2 Clash | Eindwerk Wei</p>
   </footer>
+  <button onclick="scrollToTop()" id="scrollTopBtn" title="Naar boven">↑</button>
 </body>
 </html>
 
