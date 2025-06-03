@@ -2,20 +2,19 @@
 if ($_SERVER["REQUEST_METHOD"]=="POST")
 {
     $naam = isset($_POST["naam"])? $_POST["naam"] :"";
-    print "Naam: ".htmlspecialchars($naam)."<br>";
+    echo "Naam: ".htmlspecialchars($naam)."<br>";
 
     $voornaam = isset($_POST["voornaam"])? $_POST["voornaam"] :"";
-    print "Voornaam: ".htmlspecialchars($voornaam)."<br>";
+    echo "Voornaam: ".htmlspecialchars($voornaam)."<br>";
 
     $gebruikersnaam = isset($_POST["gebruikersnaam"])? $_POST["gebruikersnaam"] :"";
-    print "Gebruikersnaam: ".htmlspecialchars($gebruikersnaam)."<br>";
+    echo "Gebruikersnaam: ".htmlspecialchars($gebruikersnaam)."<br>";
 
     $email = isset($_POST["email"])? $_POST["email"] :"";
-    print "E-mailadres: ".htmlspecialchars($email)."<br>";
+    echo "E-mailadres: ".htmlspecialchars($email)."<br>";
 
     $wachtwoord = isset($_POST["paswoord"])? $_POST["paswoord"] :"";
-    password_hash($_POST["paswoord"], PASSWORD_DEFAULT);
-    print "Wachtwoord: ".htmlspecialchars($wachtwoord)."<br>";
+    echo "Wachtwoord: ".htmlspecialchars($wachtwoord)."<br>";
     include_once("connection.php");
 
     // $wachtwoord = password_hash($_POST["paswoord"], PASSWORD_DEFAULT);
@@ -39,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST")
 
 }
 // print "<a href='signupForm.php'><button>Terug</button></a>";
-print "<button onclick='window.history.go(-1)'>Terug</button><br>";
+echo "<button onclick='window.history.go(-1)'>Terug</button><br>";
 
 //$vorige=$_SERVER["HTTP_REFERER"];
 //print $vorige;
